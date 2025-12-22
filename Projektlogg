@@ -1,1 +1,17 @@
-Vi börjar med in sample data från us500 2012 - 2020, där EMA_fast = 20 och EMA_slow = 250
+Vi kör strategin på 1 timmes data och börjar med in sample data från us500 2012 - 2020, där EMA_fast = 20, ema_medium = 50 och EMA_slow = 150
+Trades: 224
+Total PnL (points): 2430.4771
+Gross Profit: 3164.9864
+Gross Loss: -734.5093
+Profit Factor: 4.3090
+Winrate: 0.4598
+Avg Win: 30.7280
+Avg Loss: -6.0703
+Expectancy (avg/trade): 10.8503
+Max Drawdown (points): 61.8528
+Max Losing Streak (trades): 11
+Sharpe (trade-level): 5.5352
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+Vi har edge, strategin överlever costs. Hög profit factor, väldigt robust expectancy, låg drawdown relativt till total pnl (vi får se hur den blir när vi implementerar portfölj simulation), Extremt hög sharpe (trade - level). Vi justerar och leker runt med olika ema värden 
+för att bevisa robusthet och att dessa värden inte ger slumpmässig edge. Lekt runt med närliggande ema-värden och de har liknande edge. Vi kollar nu på optimeringar, t.ex. trendregime, atr
