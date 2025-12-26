@@ -1,4 +1,59 @@
-Vi kör strategin på 1 timmes data och börjar med in sample data från us500 2012 - 2020, där EMA_fast = 20, ema_medium = 50 och EMA_slow = 150
+Vi kör strategin på 1 timmes data och börjar med in sample data från us500 2012 - 2020, där EMA_fast = 20, ema_medium = 50
+
+Trades: 447
+Total PnL (points): 5136.9862
+Gross Profit: 6913.2887
+Gross Loss: -1776.3025
+Profit Factor: 3.8920
+Winrate: 0.4631
+Avg Win: 33.3975
+Avg Loss: -7.4013
+Expectancy (avg/trade): 11.4921
+Max Drawdown (points): 109.9553
+Max Losing Streak (trades): 8
+Sharpe (trade-level): 7.2936
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+
+Vi har edge, strategin överlever costs. Hög profit factor, väldigt robust expectancy, låg drawdown relativt till total pnl (vi får se hur den blir när vi implementerar portfölj simulation), Extremt hög sharpe (trade - level). Vi justerar och leker runt med olika ema värden 
+för att bevisa robusthet och att dessa värden inte ger slumpmässig edge. Lekt runt med närliggande ema-värden och de har liknande edge. Nu kollar vi på optimeringar. Detta är ett trendföljande system så det är troligt att det presterar dåligt under låg volatilitet och 
+sidledes marknader. Vi börjar testa ADX filter (volatilitetsfilter) på en period av 14 där strategin endast handlar om adx har ett värde över 20:
+
+Trades: 240
+Total PnL (points): 2691.9237
+Gross Profit: 3650.1582
+Gross Loss: -958.2345
+Profit Factor: 3.8093
+Winrate: 0.4667
+Avg Win: 32.5907
+Avg Loss: -7.4862
+Expectancy (avg/trade): 11.2163
+Max Drawdown (points): 89.7457
+Max Losing Streak (trades): 8
+Sharpe (trade-level): 5.0908
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+
+Färre trades och mindre drawdown vilket edgen får betala med marginellt lägre expectancy och profit factor och mycket lägre pnl och sharpe. Mindre pnl är förutsägbart när man filtrerar bort trades. Resultaten här visar att adx filtret inte primärt förbättrar hit rate eller 
+edge utan att den istället minskar exponering i låg-volatilitets-perioder. Vi testar att använda DI+ > DI- som trendfilter istället för adx:
+
+Trades: 412
+Total PnL (points): 4852.4562
+Gross Profit: 6571.9733
+Gross Loss: -1719.5171
+Profit Factor: 3.8220
+Winrate: 0.4587
+Avg Win: 34.7723
+Avg Loss: -7.7108
+Expectancy (avg/trade): 11.7778
+Max Drawdown (points): 109.9553
+Max Losing Streak (trades): 7
+Sharpe (trade-level): 6.9390
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+
+Detta visar att DI inte tillför någpn ny information. Vi testar ett sista trendfilter, väldigt simpelt där en bullish trend identifieras som EMA_medium > EMA_slow:
+
 Trades: 224
 Total PnL (points): 2430.4771
 Gross Profit: 3164.9864
@@ -13,5 +68,25 @@ Max Losing Streak (trades): 11
 Sharpe (trade-level): 5.5352
 Spread (points): 0.8000
 Commission RT (points): 0.1000
-Vi har edge, strategin överlever costs. Hög profit factor, väldigt robust expectancy, låg drawdown relativt till total pnl (vi får se hur den blir när vi implementerar portfölj simulation), Extremt hög sharpe (trade - level). Vi justerar och leker runt med olika ema värden 
-för att bevisa robusthet och att dessa värden inte ger slumpmässig edge. Lekt runt med närliggande ema-värden och de har liknande edge. Vi kollar nu på optimeringar, t.ex. trendregime, atr
+
+Lovande resultat som liknar adx filtret en del fast med lägre drawdown, högre profit factor och sharpe, marginellt lägre expectancy. Detta är ett bättre val än adx eftersom EMA ändras långsammare och håller sig därför bättre till vilken regim marknaden är i. Samt
+att vi slipper introducera en ny indikator i strategin. Vi tillföär endast en till ema vilket håller det lite simplare. Vi fryser denna strategi som bullish_trend = EMA(50) > EMA(150), cross = prev_ema(20) < ema(50) and ema(25) > ema(50), long_entry_signal = cross and
+bullish trend. Nu går vi över till out of sample testing. Testet fortsätter göras på US500 efter de åren vi haft in sample på, 2021 - 2025:
+
+Trades: 122
+Total PnL (points): 2073.1924
+Gross Profit: 2901.1045
+Gross Loss: -827.9122
+Profit Factor: 3.5041
+Winrate: 0.4508
+Avg Win: 52.7474
+Avg Loss: -12.3569
+Expectancy (avg/trade): 16.9934
+Max Drawdown (points): 115.8227
+Max Losing Streak (trades): 6
+Sharpe (trade-level): 3.7773
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+
+Modellen klarar helt klart out of sample testet. Lägre sharpe och profit factor men fortfarande väldigt acceptabla. Expecancy ökar samtidigt som drawdown blir högre men inte opropertionerligt eftersom det färre trades med högrte average loss. Vi vill kunna kombinera denna
+strategi med våran mean reversion strategi som vi redan utvecklat. Den kommer att handla US500, Nasdaq100 och 
