@@ -89,4 +89,40 @@ Spread (points): 0.8000
 Commission RT (points): 0.1000
 
 Modellen klarar helt klart out of sample testet. Lägre sharpe och profit factor men fortfarande väldigt acceptabla. Expecancy ökar samtidigt som drawdown blir högre men inte opropertionerligt eftersom det färre trades med högrte average loss. Vi vill kunna kombinera denna
-strategi med våran mean reversion strategi som vi redan utvecklat. Den kommer att handla US500, Nasdaq100 och 
+strategi med våran mean reversion strategi som vi redan utvecklat. Den kommer att handla US500, USTECH och US30. Vi testar därför dessa två marknader (2012-2025) i förväntan om liknande resultat. USTECH:
+
+Trades: 301
+Total PnL (points): 19299.9479
+Gross Profit: 24280.0029
+Gross Loss: -4980.0550
+Profit Factor: 4.8754
+Winrate: 0.4585
+Avg Win: 175.9421
+Avg Loss: -30.5525
+Expectancy (avg/trade): 64.1194
+Max Drawdown (points): 459.3053
+Max Losing Streak (trades): 7
+Sharpe (trade-level): 6.0887
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+
+Och US30:
+Market: US500
+Trades: 321
+Total PnL (points): 35426.4563
+Gross Profit: 45448.0540
+Gross Loss: -10021.5977
+Profit Factor: 4.5350
+Winrate: 0.4704
+Avg Win: 300.9805
+Avg Loss: -58.9506
+Expectancy (avg/trade): 110.3628
+Max Drawdown (points): 819.3039
+Max Losing Streak (trades): 7
+Sharpe (trade-level): 6.4505
+Spread (points): 0.8000
+Commission RT (points): 0.1000
+
+Vi har edge på alla marknader och vi kommer kombinera dessa tre till strategins portfölj. Nu börjar vi analysera multi market backtest och simulerar en equity utveckling med kapital. Vi kommer även dra mer statistik från detta såsom sharpe på annualiserad nivå, 
+max drawdown i kapitalform, CAGR, calmar och sortino kvot. Ifall allt ser bra ut görs en monte carlo simulation med jämna vikter över marknaderna, sedan använder vi ERC (Equal Risk Contribution) och Tangency Weights för att få fram optimala vikter för marknaderna. 
+Sist gör en backtest och monte carlo simulation med dessa vikter.
