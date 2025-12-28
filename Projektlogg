@@ -126,3 +126,29 @@ Commission RT (points): 0.1000
 Vi har edge på alla marknader och vi kommer kombinera dessa tre till strategins portfölj. Nu börjar vi analysera multi market backtest och simulerar en equity utveckling med kapital. Vi kommer även dra mer statistik från detta såsom sharpe på annualiserad nivå, 
 max drawdown i kapitalform, CAGR, calmar och sortino kvot. Ifall allt ser bra ut görs en monte carlo simulation med jämna vikter över marknaderna, sedan använder vi ERC (Equal Risk Contribution) och Tangency Weights för att få fram optimala vikter för marknaderna. 
 Sist gör en backtest och monte carlo simulation med dessa vikter.
+--- PORTFÖLJ METRICS (MULTI-MARKET MTM) ---
+Equity Start: 50000.0000
+Equity End: 255798.6542
+CAGR: 0.1244
+Max Drawdown (%): -3.0748
+Sharpe (ann.): 2.6990
+Calmar: 4.0450
+Avg Daily Return: 0.0004
+Daily Vol: 0.0025
+Open Positions (end): 0
+Time in Market (%): 42.3262
+Max Concurrent Positions: 3
+Avg Concurrent Positions: 0.7970
+Avg Gross Exposure (%): 26.3852
+Max Gross Exposure (%): 100.0000
+
+--- PORTFÖLJ TRADE-STATS (REALISERAD, NET $) ---
+Trades: 934
+Total Realized PnL ($): 205798.65419453816
+Winrate: 0.48394004282655245
+Profit Factor: 4.9546789599262295
+
+Sanity (Equity End - Start): 205798.6541945387
+
+problemet med exit när ema_fast <= ema_medium, vi vet inte om korsningen sker förrän en timmes baren stängs, att vi då sätter exit pris på ema_medium ger optimistiska resultat eftersom ema-värdet endast ändras varje bar. Om vi vill ha en ema som uppdateras kontinuerligt 
+kan vi istället basera ema_medium(exit) på t.ex. 5 minuters data.
