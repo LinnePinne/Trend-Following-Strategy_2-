@@ -151,4 +151,5 @@ Profit Factor: 4.9546789599262295
 Sanity (Equity End - Start): 205798.6541945387
 
 problemet med exit när ema_fast <= ema_medium, vi vet inte om korsningen sker förrän en timmes baren stängs, att vi då sätter exit pris på ema_medium ger optimistiska resultat eftersom ema-värdet endast ändras varje bar. Om vi vill ha en ema som uppdateras kontinuerligt 
-kan vi istället basera ema_medium(exit) på t.ex. 5 minuters data.
+kan vi istället basera ema_medium(exit) på t.ex. 5 minuters data. Det är ett rejält logik fel vi upptäcker nu som vi egentligen borde insett tidigare, vi sätter att exit priset är ett ema när exitlogiken inte ens säger att pris ska toucha det. Vi slänger denna strategi
+då det inte finns någon edge med korrekt logik.
